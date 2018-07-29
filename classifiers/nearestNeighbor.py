@@ -10,13 +10,21 @@ class nearestNeighbor:
         self.Xtr = X
         self.ytr = y
 
-    def predict(self, X):
+    def predict(self, X, metric='l2'):
         numTest = X.shape[0]
         Ypred = np.zeros(numTest, dtype=self.ytr.dtype)
+        Ydist = np.zeros(numTest, dtype=np.float32)
 
         for i in np.arange(numTest):
-            distances = np.sum(abs(self.Xtr - X[i, :]), axis=1)
+            if metric == 'l2':
+                # L2 distance metric
+                distances = np.sqrt(np.sum(np.square(self.Xtr - X[i, :]), axis=1))
+            else:
+                # L1 distance metric
+                distances = np.sum(abs(self.Xtr - X[i, :]), axis=1)
+
             minIndex = np.argmin(distances)
             Ypred[i] = self.ytr[minIndex]
+            Ydist[i] = distances[minIndex] / np.max(distances)
 
-        return Ypred
+        return Ypred, Ydist
