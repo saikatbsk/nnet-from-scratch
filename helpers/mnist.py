@@ -61,9 +61,9 @@ def read_dataset(force_download=False):
 
     return train_images, train_labels, test_images, test_labels
 
-def plot_samples(images, labels):
-    fig = plt.figure(figsize=(10, 10))
-    gs = gridspec.GridSpec(num_classes, 10)
+def plot_samples(images, labels, num_classes=num_classes):
+    fig = plt.figure(figsize=(num_classes, 10))
+    gs = gridspec.GridSpec(10, num_classes)
 
     for i in np.arange(num_classes):
         idxs = np.where(labels == i)[0]
